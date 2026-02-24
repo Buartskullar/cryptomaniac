@@ -17,7 +17,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void textTransClick();
+
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
+    QString textEdit(QString input);
 };
 #endif // MAINWINDOW_H
