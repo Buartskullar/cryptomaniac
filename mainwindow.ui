@@ -20,44 +20,68 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QSplitter" name="splitter_2">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>130</y>
-      <width>221</width>
-      <height>28</height>
+      <x>460</x>
+      <y>390</y>
+      <width>400</width>
+      <height>140</height>
      </rect>
     </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+    <widget class="QTextEdit" name="textEdit_output">
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="markdown">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_encrypter">
+     <property name="text">
+      <string>Зашифровать!</string>
+     </property>
+    </widget>
    </widget>
-   <widget class="QTextEdit" name="textEdit">
+   <widget class="QSplitter" name="splitter">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>130</y>
-      <width>261</width>
-      <height>31</height>
+      <x>40</x>
+      <y>390</y>
+      <width>400</width>
+      <height>140</height>
      </rect>
     </property>
-    <property name="readOnly">
-     <bool>true</bool>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
     </property>
-    <property name="markdown">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>650</x>
-      <y>180</y>
-      <width>83</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
+    <widget class="QTextEdit" name="textEdit_input"/>
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Введите текст для шифрования</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

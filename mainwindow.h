@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "crypto.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,12 +19,12 @@ public:
     ~MainWindow();
 
 private slots:
-    void textTransClick();
 
-    void on_pushButton_clicked();
+    void on_pushButton_encrypter_clicked();
 
 private:
     Ui::MainWindow *ui;
-    QString textEdit(QString input);
+    QString textEncrypt(QString input);
+    crypto cryops;
 };
 #endif // MAINWINDOW_H
