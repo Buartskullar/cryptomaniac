@@ -18,10 +18,10 @@ private:
     QString alphEngCapRev;
     QString alphEngLowRev;
 
-    //QString alphRusCap;
-    //QString alphRusLow;
-    //QString alphRusCapRev;
-    //QString alphRusLowRev;
+    QString alphRusCap;
+    QString alphRusLow;
+    QString alphRusCapRev;
+    QString alphRusLowRev;
 
 };
 

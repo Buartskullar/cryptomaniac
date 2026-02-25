@@ -6,11 +6,11 @@ crypto::crypto() {
     alphEngCapRev = "ZYXWVUTSRQPONMLKJIHGFEDCBA";
     alphEngLowRev = "zyxwvutsrqponmlkjihgfedcba";
 
+    alphRusCap = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+    alphRusLow = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+    alphRusCapRev = "ЯЮЭЬЫЪЩШЧЦХФУТСРПОНМЛКЙИЗЖЁЕДГВБА";
+    alphRusLowRev = "яюэьыъщшчцхфутсрпонмлкйизжёедгвба";
 
-    //alphRusCap = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
-    //alphRusLow = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-    //alphRusCapRev = "ЯЮЭЬЫЪЩШЧЦХФУТСРПОНМЛКЙИЗЖЁЕДГВБА";
-    //alphRusLowRev = "яюэьыъщшчцхфутсрпонмлкйизжёедгвба";
 
 }
 
@@ -20,14 +20,13 @@ QString crypto::encryptAtbash(QString input){
     QString output = "";
     for (int i = 0; i < input.length(); i++){
         if (input[i] == ' ') output.append(' ');
-        //if ((alphRusCap.indexOf(input[i]) != -1) || (alphRusLow.indexOf(input[i]) != 1)){
-        if (alphRusCap.indexOf(input[i]) != -1){
-            if (input[i].isUpper()){
-                output.append(alphRusCapRev[alphRusCap.indexOf(input[i])]);
-            }
-            if (input[i].isLower()){
-                output.append(alphRusLowRev[alphRusLow.indexOf(input[i])]);
-            }
+        if ((alphRusCap.indexOf(input[i]) != -1) || (alphRusLow.indexOf(input[i]) != -1)){
+                if (input[i].isUpper()){
+                    output.append(alphRusCapRev[alphRusCap.indexOf(input[i])]);
+                }
+                if (input[i].isLower()){
+                    output.append(alphRusLowRev[alphRusLow.indexOf(input[i])]);
+                }
         }
         else {
             if (input[i].isUpper()){
@@ -40,3 +39,4 @@ QString crypto::encryptAtbash(QString input){
     };
     return output;
 }
+

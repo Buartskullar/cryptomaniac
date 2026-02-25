@@ -24,7 +24,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QString textEncrypt(QString input);
     crypto cryops;
 };
 #endif // MAINWINDOW_H
