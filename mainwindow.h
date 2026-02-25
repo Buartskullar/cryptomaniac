@@ -22,8 +22,15 @@ private slots:
 
     void on_pushButton_encrypter_clicked();
 
+    void on_radioButton_decrypt_clicked();
+
+    void on_radioButton_encrypt_clicked();
+
 private:
     Ui::MainWindow *ui;
     crypto cryops;
+    bool modeF;
+
+    bool isDecrypting();
 };
 #endif // MAINWINDOW_H

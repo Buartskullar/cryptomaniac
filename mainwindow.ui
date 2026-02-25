@@ -26,7 +26,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QSplitter" name="splitter_2">
+   <widget class="QSplitter" name="outputsplitter">
     <property name="geometry">
      <rect>
       <x>460</x>
@@ -55,7 +55,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QSplitter" name="splitter">
+   <widget class="QSplitter" name="inputsplitter">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -88,6 +88,47 @@
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>360</y>
+      <width>401</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="radioButton_decrypt">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Режим Дешифровки</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="radioButton_encrypt">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Режим Шифровки</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

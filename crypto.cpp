@@ -19,7 +19,6 @@ crypto::~crypto() {}
 QString crypto::encryptAtbash(QString input){
     QString output = "";
     for (int i = 0; i < input.length(); i++){
-        if (input[i] == ' ') output.append(' ');
         if ((alphRusCap.indexOf(input[i]) != -1) || (alphRusLow.indexOf(input[i]) != -1)){
                 if (input[i].isUpper()){
                     output.append(alphRusCapRev[alphRusCap.indexOf(input[i])]);
@@ -28,7 +27,7 @@ QString crypto::encryptAtbash(QString input){
                     output.append(alphRusLowRev[alphRusLow.indexOf(input[i])]);
                 }
         }
-        else {
+        else if ((alphEngCap.indexOf(input[i]) != -1) || (alphEngLow.indexOf(input[i]) != -1)) {
             if (input[i].isUpper()){
                 output.append(alphEngCapRev[alphEngCap.indexOf(input[i])]);
             }
@@ -36,7 +35,31 @@ QString crypto::encryptAtbash(QString input){
                 output.append(alphEngLowRev[alphEngLow.indexOf(input[i])]);
             }
         }
+        else output.append(input[i]);
     };
     return output;
 }
 
+QString crypto::decryptAtbash(QString input){
+    QString output = "";
+    for (int i = 0; i < input.length(); i++){
+        if ((alphRusCap.indexOf(input[i]) != -1) || (alphRusLow.indexOf(input[i]) != -1)){
+            if (input[i].isUpper()){
+                output.append(alphRusCap[alphRusCapRev.indexOf(input[i])]);
+            }
+            if (input[i].isLower()){
+                output.append(alphRusLow[alphRusLowRev.indexOf(input[i])]);
+            }
+        }
+        else if ((alphEngCap.indexOf(input[i]) != -1) || (alphEngLow.indexOf(input[i]) != -1)) {
+            if (input[i].isUpper()){
+                output.append(alphEngCap[alphEngCapRev.indexOf(input[i])]);
+            }
+            if (input[i].isLower()){
+                output.append(alphEngLow[alphEngLowRev.indexOf(input[i])]);
+            }
+        }
+        else output.append(input[i]);
+    };
+    return output;
+}
