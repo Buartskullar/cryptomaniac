@@ -12,6 +12,12 @@ public:
     QString encryptAtbash(const QString input);
     QString decryptAtbash(const QString input);
 
+    QString encryptCaesar(const QString input, const int offset);
+    QString decryptCaesar(const QString input, const int offset);
+
+    QString encryptReshelye(const QString input, const QString key);
+    QString decryptReshelye(const QString input, const QString key);
+
 private:
     QString alphEngCap;
     QString alphEngLow;

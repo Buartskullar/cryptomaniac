@@ -29,8 +29,15 @@ private slots:
 private:
     Ui::MainWindow *ui;
     crypto cryops;
+
     bool modeF;
+    int modeC;
 
     bool isDecrypting();
+    void onListItemChanged(int row);
+
+    QString encryptMaster();
+    QString decryptMaster();
+
 };
 #endif // MAINWINDOW_H

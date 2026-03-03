@@ -63,3 +63,51 @@ QString crypto::decryptAtbash(QString input){
     };
     return output;
 }
+
+QString crypto::encryptCaesar(QString input, int offset){
+    QString output = "";
+    for (int i = 0; i < input.length(); i++){
+        if ((alphRusCap.indexOf(input[i]) != -1) || (alphRusLow.indexOf(input[i]) != -1)){
+            if (input[i].isUpper()){
+                output.append(alphRusCap[(alphRusCap.indexOf(input[i])+offset)%alphRusCap.length()]);
+            }
+            if (input[i].isLower()){
+                output.append(alphRusLow[(alphRusLow.indexOf(input[i])+offset)%alphRusLow.length()]);
+            }
+        }
+        else if ((alphEngCap.indexOf(input[i]) != -1) || (alphEngLow.indexOf(input[i]) != -1)) {
+            if (input[i].isUpper()){
+                output.append(alphEngCap[(alphEngCap.indexOf(input[i])+offset)%alphEngCap.length()]);
+            }
+            if (input[i].isLower()){
+                output.append(alphEngLow[(alphEngLow.indexOf(input[i])+offset)%alphEngCap.length()]);
+            }
+        }
+        else output.append(input[i]);
+    };
+    return output;
+}
+
+QString crypto::decryptCaesar(QString input, int offset){
+    QString output = "";
+    for (int i = 0; i < input.length(); i++){
+        if ((alphRusCap.indexOf(input[i]) != -1) || (alphRusLow.indexOf(input[i]) != -1)){
+            if (input[i].isUpper()){
+                output.append(alphRusCap[(alphRusCap.indexOf(input[i])-offset + alphRusCap.length())%alphRusCap.length()]);
+            }
+            if (input[i].isLower()){
+                output.append(alphRusLow[(alphRusLow.indexOf(input[i])-offset + alphRusLow.length())%alphRusLow.length()]);
+            }
+        }
+        else if ((alphEngCap.indexOf(input[i]) != -1) || (alphEngLow.indexOf(input[i]) != -1)) {
+            if (input[i].isUpper()){
+                output.append(alphEngCap[(alphEngCap.indexOf(input[i])-offset + alphEngCap.length())%alphEngCap.length()]);
+            }
+            if (input[i].isLower()){
+                output.append(alphEngLow[(alphEngLow.indexOf(input[i])-offset + alphEngLow.length())%alphEngLow.length()]);
+            }
+        }
+        else output.append(input[i]);
+    };
+    return output;
+}

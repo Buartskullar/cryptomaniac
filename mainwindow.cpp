@@ -8,6 +8,16 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     modeF = 0;
+    modeC = 0;
+    ui->listModes->addItem("Атбаш");
+    ui->listModes->addItem("Цезарь");
+    ui->listModes->addItem("Ришелье");
+
+    ui->labelOffset->setVisible(false);
+    ui->spinOffset->setVisible(false);
+
+    connect(ui->listModes, &QListWidget::currentRowChanged,
+            this, &MainWindow::onListItemChanged);
 }
 
 MainWindow::~MainWindow()
@@ -19,10 +29,10 @@ void MainWindow::on_pushButton_encrypter_clicked()
 {
     QString output;
     if (isDecrypting()) {
-        output = cryops.decryptAtbash(ui->textEdit_input->toPlainText());
+        output = decryptMaster();
     }
     else {
-        output = cryops.encryptAtbash(ui->textEdit_input->toPlainText());
+        output = encryptMaster();
     }
     ui->textEdit_output->setPlainText(output);
 }
@@ -43,3 +53,45 @@ void MainWindow::on_radioButton_encrypt_clicked()
     ui->pushButton_encrypter->setText("Зашифровать!");
 }
 
+void MainWindow::onListItemChanged(int row){
+    switch (row) {
+    case 0:
+        modeC = 0;
+        ui->labelOffset->setVisible(false);
+        ui->spinOffset->setVisible(false);
+        break;
+    case 1:
+        modeC = 1;
+        ui->labelOffset->setVisible(true);
+        ui->spinOffset->setVisible(true);
+        break;
+    default:
+        break;
+    }
+}
+
+QString MainWindow::encryptMaster(){
+    switch (modeC) {
+    case 0:
+        return cryops.encryptAtbash(ui->textEdit_input->toPlainText());
+        break;
+    case 1:
+        return cryops.encryptCaesar(ui->textEdit_input->toPlainText(), ui->spinOffset->value());
+        break;
+    default:
+        return "";
+    }
+}
+
+QString MainWindow::decryptMaster(){
+    switch (modeC) {
+    case 0:
+        return cryops.decryptAtbash(ui->textEdit_input->toPlainText());
+        break;
+    case 1:
+        return cryops.decryptCaesar(ui->textEdit_input->toPlainText(), ui->spinOffset->value());
+        break;
+    default:
+        return "";
+    }
+}
