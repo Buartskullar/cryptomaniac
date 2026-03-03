@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "crypto.h"
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -35,6 +37,9 @@ private:
 
     bool isDecrypting();
     void onListItemChanged(int row);
+
+    void caesarUi(bool status);
+    void reshelyeUi(bool status);
 
     QString encryptMaster();
     QString decryptMaster();

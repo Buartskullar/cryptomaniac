@@ -13,11 +13,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listModes->addItem("Цезарь");
     ui->listModes->addItem("Ришелье");
 
-    ui->labelOffset->setVisible(false);
-    ui->spinOffset->setVisible(false);
+    caesarUi(false);
+    reshelyeUi(false);
 
     connect(ui->listModes, &QListWidget::currentRowChanged,
             this, &MainWindow::onListItemChanged);
+
+    QRegularExpression rx("[0-9()]+");
+    QValidator *validator = new QRegularExpressionValidator(rx, this);
+    ui->lineReshelye->setValidator(validator);
 }
 
 MainWindow::~MainWindow()
@@ -53,17 +57,32 @@ void MainWindow::on_radioButton_encrypt_clicked()
     ui->pushButton_encrypter->setText("Зашифровать!");
 }
 
+void MainWindow::caesarUi(bool status){
+    ui->labelOffset->setVisible(status);
+    ui->spinOffset->setVisible(status);
+}
+
+void MainWindow::reshelyeUi(bool status){
+    ui->labelReshelye->setVisible(status);
+    ui->lineReshelye->setVisible(status);
+}
+
 void MainWindow::onListItemChanged(int row){
     switch (row) {
     case 0:
         modeC = 0;
-        ui->labelOffset->setVisible(false);
-        ui->spinOffset->setVisible(false);
+        caesarUi(false);
+        reshelyeUi(false);
         break;
     case 1:
         modeC = 1;
-        ui->labelOffset->setVisible(true);
-        ui->spinOffset->setVisible(true);
+        caesarUi(true);
+        reshelyeUi(false);
+        break;
+    case 2:
+        modeC = 2;
+        caesarUi(false);
+        reshelyeUi(true);
         break;
     default:
         break;
