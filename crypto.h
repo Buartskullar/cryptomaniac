@@ -1,6 +1,7 @@
 #ifndef CRYPTO_H
 #define CRYPTO_H
 #include <QApplication>
+#include <QRegularExpression>
 
 class crypto
 {
@@ -28,6 +29,11 @@ private:
     QString alphRusLow;
     QString alphRusCapRev;
     QString alphRusLowRev;
+
+    QRegularExpression forSplit;
+
+    QList<QString> splitReshelye(const QString &input);
+    QList<int> spaceFinder(const QString &input);
 
 };
 

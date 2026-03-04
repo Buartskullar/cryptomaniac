@@ -11,6 +11,7 @@ crypto::crypto() {
     alphRusCapRev = "ЯЮЭЬЫЪЩШЧЦХФУТСРПОНМЛКЙИЗЖЁЕДГВБА";
     alphRusLowRev = "яюэьыъщшчцхфутсрпонмлкйизжёедгвба";
 
+    forSplit = QRegularExpression("[()]+");
 
 }
 
@@ -109,5 +110,41 @@ QString crypto::decryptCaesar(QString input, int offset){
         }
         else output.append(input[i]);
     };
+    return output;
+}
+
+QList<QString> crypto::splitReshelye(const QString &input){
+    return input.split(forSplit, Qt::SkipEmptyParts);
+}
+
+QList<int> crypto::spaceFinder(const QString &input){
+    QList<int> spaces;
+    for (int i = 0; i < input.length(); ++i) {
+        if (input.at(i).isSpace()) {
+            spaces.append(i); // Запоминаем индекс
+        }
+    }
+    return spaces;
+}
+
+QString crypto::encryptReshelye(QString input, QString key){
+    QString output = "";
+    int offset = 0;
+    QList<QString> keys = splitReshelye(key);
+    QList<int> spaces = spaceFinder(input);
+    input.remove(' ');
+    for (int listI = 0; listI < keys.length(); listI++){
+        QString curKey = keys[listI];
+        QString segment = input.mid(offset, curKey.length());
+        if (segment.isEmpty()) break;
+        offset += segment.length();
+        for (int i = 0; i < segment.length(); i++){
+            if (segment[i] == ' ') output.append(' ');
+            output.append(segment[curKey[i].digitValue()-1]);
+        }
+    }
+    for (int i = 0; i < spaces.size(); i++){
+        output.insert(spaces[i], ' ');
+    }
     return output;
 }

@@ -32,9 +32,11 @@ private:
     Ui::MainWindow *ui;
     crypto cryops;
 
+
     bool modeF;
     int modeC;
 
+    int isKeyValid(const QString &key);
     bool isDecrypting();
     void onListItemChanged(int row);
 

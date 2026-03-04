@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 //#include "crypto.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -97,8 +98,13 @@ QString MainWindow::encryptMaster(){
     case 1:
         return cryops.encryptCaesar(ui->textEdit_input->toPlainText(), ui->spinOffset->value());
         break;
+    case 2:
+        if (isKeyValid(ui->lineReshelye->text()) == 0)
+        return cryops.encryptReshelye(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
+        else return " ";
+        break;
     default:
-        return "";
+        return " ";
     }
 }
 
@@ -113,4 +119,43 @@ QString MainWindow::decryptMaster(){
     default:
         return "";
     }
+}
+
+int MainWindow::isKeyValid(const QString &key) {
+    // 1. Проверка баланса и формата скобок через регулярное выражение
+    // Проверяет, что строка состоит только из групп вида (1,2,3)
+    static QRegularExpression formalRe(R"(^(\(\d+(,\d+)*\))+$)");
+    if (!formalRe.match(key).hasMatch()) {
+        ui->errorsReshelye->setText("Ошибка в скобках!");
+        return 1;
+    }
+
+    // Разрезаем ключ на блоки: "(1,2)(3,4)" -> ["1,2", "3,4"]
+    static QRegularExpression errorChecker("[()]+");
+    QStringList blocks = key.split(errorChecker, Qt::SkipEmptyParts);
+    int totalDigitsCount = 0;
+
+    for (const QString &block : blocks) {
+        QSet<int> uniqueNumbers; // Для поиска дубликатов внутри одной скобки
+
+        for (const QChar &num : block) {
+            int n = num.digitValue();
+            totalDigitsCount++;
+
+            // 2. Проверка на повторение чисел в пределах одной скобки
+            if (uniqueNumbers.contains(n)) {
+                ui->errorsReshelye->setText("Ошибка в дубликатах!");
+                return 2;
+            }
+            uniqueNumbers.insert(n);
+        }
+
+        // 3. Проверка порога общего количества цифр
+        if (totalDigitsCount > ui->textEdit_input->toPlainText().length()) {
+            ui->errorsReshelye->setText("Ошибка в длине!");
+            return 3;
+        }
+    }
+
+    return 0;
 }
