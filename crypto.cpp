@@ -11,8 +11,6 @@ crypto::crypto() {
     alphRusCapRev = "ЯЮЭЬЫЪЩШЧЦХФУТСРПОНМЛКЙИЗЖЁЕДГВБА";
     alphRusLowRev = "яюэьыъщшчцхфутсрпонмлкйизжёедгвба";
 
-    forSplit = QRegularExpression("[()]+");
-
 }
 
 crypto::~crypto() {}
@@ -114,6 +112,7 @@ QString crypto::decryptCaesar(QString input, int offset){
 }
 
 QList<QString> crypto::splitReshelye(const QString &input){
+    static QRegularExpression forSplit("[()]+");
     return input.split(forSplit, Qt::SkipEmptyParts);
 }
 
@@ -127,7 +126,7 @@ QList<int> crypto::spaceFinder(const QString &input){
     return spaces;
 }
 
-QString crypto::encryptReshelye(QString input, QString key){
+QString crypto::decencReshelye(QString input, QString key){
     QString output = "";
     int offset = 0;
     QList<QString> keys = splitReshelye(key);
@@ -136,15 +135,23 @@ QString crypto::encryptReshelye(QString input, QString key){
     for (int listI = 0; listI < keys.length(); listI++){
         QString curKey = keys[listI];
         QString segment = input.mid(offset, curKey.length());
+        int threshold = segment.length();
+        for (const QChar &num : curKey){
+            if (num.digitValue() > threshold) {
+                return "Ошибка в наибольшей цифре ключа!";
+            }
+        }
         if (segment.isEmpty()) break;
-        offset += segment.length();
         for (int i = 0; i < segment.length(); i++){
             if (segment[i] == ' ') output.append(' ');
             output.append(segment[curKey[i].digitValue()-1]);
         }
+        offset += segment.length();
+        output.remove(' ');
     }
     for (int i = 0; i < spaces.size(); i++){
         output.insert(spaces[i], ' ');
     }
     return output;
 }
+

@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->listModes, &QListWidget::currentRowChanged,
             this, &MainWindow::onListItemChanged);
 
-    QRegularExpression rx("[0-9()]+");
+    QRegularExpression rx("[1-9()]+");
     QValidator *validator = new QRegularExpressionValidator(rx, this);
     ui->lineReshelye->setValidator(validator);
 }
@@ -66,7 +66,13 @@ void MainWindow::caesarUi(bool status){
 void MainWindow::reshelyeUi(bool status){
     ui->labelReshelye->setVisible(status);
     ui->lineReshelye->setVisible(status);
+
+    ui->radioButton_decrypt->setVisible(!status);
+    ui->radioButton_encrypt->setVisible(!status);
+
+    ui->pushButton_encrypter->setText("Перешифровать!");
 }
+
 
 void MainWindow::onListItemChanged(int row){
     switch (row) {
@@ -100,7 +106,7 @@ QString MainWindow::encryptMaster(){
         break;
     case 2:
         if (isKeyValid(ui->lineReshelye->text()) == 0)
-        return cryops.encryptReshelye(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
+        return cryops.decencReshelye(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
         else return " ";
         break;
     default:
@@ -115,6 +121,11 @@ QString MainWindow::decryptMaster(){
         break;
     case 1:
         return cryops.decryptCaesar(ui->textEdit_input->toPlainText(), ui->spinOffset->value());
+        break;
+    case 2:
+        if (isKeyValid(ui->lineReshelye->text()) == 0)
+        return cryops.decencReshelye(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
+        else return " ";
         break;
     default:
         return "";
@@ -159,3 +170,22 @@ int MainWindow::isKeyValid(const QString &key) {
 
     return 0;
 }
+
+void MainWindow::on_explainButton_clicked()
+{
+    QString linkAtbash = "https://ru.wikipedia.org/wiki/%D0%90%D1%82%D0%B1%D0%B0%D1%88";
+    QString linkCaesar = "https://ru.wikipedia.org/wiki/%D0%A8%D0%B8%D1%84%D1%80_%D0%A6%D0%B5%D0%B7%D0%B0%D1%80%D1%8F";
+    QString linkReshelye = "https://de.donstu.ru/CDOCourses/AII/POVT/%D0%9A%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5%20%D1%88%D0%B8%D1%84%D1%80%D1%8B/11.html";
+    switch (modeC) {
+    case 0:
+        QDesktopServices::openUrl(QUrl(linkAtbash));
+        break;
+    case 1:
+        QDesktopServices::openUrl(QUrl(linkCaesar));
+        break;
+    case 2:
+        QDesktopServices::openUrl(QUrl(linkReshelye));
+        break;
+    }
+}
+

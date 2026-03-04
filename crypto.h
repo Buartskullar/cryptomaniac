@@ -16,8 +16,7 @@ public:
     QString encryptCaesar(const QString input, const int offset);
     QString decryptCaesar(const QString input, const int offset);
 
-    QString encryptReshelye(const QString input, const QString key);
-    QString decryptReshelye(const QString input, const QString key);
+    QString decencReshelye(const QString input, const QString key);
 
 private:
     QString alphEngCap;
@@ -29,8 +28,6 @@ private:
     QString alphRusLow;
     QString alphRusCapRev;
     QString alphRusLowRev;
-
-    QRegularExpression forSplit;
 
     QList<QString> splitReshelye(const QString &input);
     QList<int> spaceFinder(const QString &input);
