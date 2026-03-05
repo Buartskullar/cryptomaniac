@@ -66,11 +66,6 @@ void MainWindow::caesarUi(bool status){
 void MainWindow::reshelyeUi(bool status){
     ui->labelReshelye->setVisible(status);
     ui->lineReshelye->setVisible(status);
-
-    ui->radioButton_decrypt->setVisible(!status);
-    ui->radioButton_encrypt->setVisible(!status);
-
-    ui->pushButton_encrypter->setText("Перешифровать!");
 }
 
 
@@ -106,7 +101,7 @@ QString MainWindow::encryptMaster(){
         break;
     case 2:
         if (isKeyValid(ui->lineReshelye->text()) == 0)
-        return cryops.decencReshelye(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
+        return cryops.encryptReshelye(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
         else return " ";
         break;
     default:
@@ -124,7 +119,7 @@ QString MainWindow::decryptMaster(){
         break;
     case 2:
         if (isKeyValid(ui->lineReshelye->text()) == 0)
-        return cryops.decencReshelye(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
+        return cryops.decryptReshelye(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
         else return " ";
         break;
     default:

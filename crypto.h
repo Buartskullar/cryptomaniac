@@ -16,7 +16,8 @@ public:
     QString encryptCaesar(const QString input, const int offset);
     QString decryptCaesar(const QString input, const int offset);
 
-    QString decencReshelye(const QString input, const QString key);
+    QString encryptReshelye(const QString input, const QString key);
+    QString decryptReshelye(const QString input, const QString key);
 
 private:
     QString alphEngCap;

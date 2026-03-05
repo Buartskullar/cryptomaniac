@@ -126,7 +126,7 @@ QList<int> crypto::spaceFinder(const QString &input){
     return spaces;
 }
 
-QString crypto::decencReshelye(QString input, QString key){
+QString crypto::encryptReshelye(QString input, QString key){
     QString output = "";
     int offset = 0;
     QList<QString> keys = splitReshelye(key);
@@ -155,3 +155,33 @@ QString crypto::decencReshelye(QString input, QString key){
     return output;
 }
 
+QString crypto::decryptReshelye(QString input, QString key){
+    QString output = "";
+    int offset = 0;
+    QList<QString> keys = splitReshelye(key);
+    QList<int> spaces = spaceFinder(input);
+    input.remove(' ');
+    for (int listI = 0; listI < keys.length(); listI++){
+        QString curKey = keys[listI];
+        QString segment = input.mid(offset, curKey.length());
+        QString outSeg;
+        outSeg.fill('.', segment.length());
+        for (const QChar &num : curKey){
+            if (num.digitValue() > segment.length()) {
+                return "Ошибка в наибольшей цифре ключа!";
+            }
+        }
+        if (segment.isEmpty()) break;
+        for (int i = 0; i < segment.length(); i++){
+            if (segment[i] == ' ') outSeg[i] = ' ';
+            outSeg[curKey[i].digitValue()-1] = segment[i];
+        }
+        offset += segment.length();
+        output.append(outSeg);
+        output.remove(' ');
+    }
+    for (int i = 0; i < spaces.size(); i++){
+        output.insert(spaces[i], ' ');
+    }
+    return output;
+}
