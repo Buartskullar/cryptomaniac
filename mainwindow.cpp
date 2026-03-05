@@ -61,13 +61,26 @@ void MainWindow::on_radioButton_encrypt_clicked()
 void MainWindow::caesarUi(bool status){
     ui->labelOffset->setVisible(status);
     ui->spinOffset->setVisible(status);
+
+    if (isDecrypting()) ui->pushButton_encrypter->setText("Дешифровать!");
+    else ui->pushButton_encrypter->setText("Зашифровать!");
 }
 
 void MainWindow::reshelyeUi(bool status){
     ui->labelReshelye->setVisible(status);
     ui->lineReshelye->setVisible(status);
+
+    if (isDecrypting()) ui->pushButton_encrypter->setText("Дешифровать!");
+    else ui->pushButton_encrypter->setText("Зашифровать!");
 }
 
+void MainWindow::atbashUi(bool status){
+    ui->radioButton_decrypt->setVisible(!status);
+    ui->radioButton_encrypt->setVisible(!status);
+
+    if (status)
+    ui->pushButton_encrypter->setText("Перешифровать!");
+}
 
 void MainWindow::onListItemChanged(int row){
     switch (row) {
@@ -75,16 +88,19 @@ void MainWindow::onListItemChanged(int row){
         modeC = 0;
         caesarUi(false);
         reshelyeUi(false);
+        atbashUi(true);
         break;
     case 1:
         modeC = 1;
         caesarUi(true);
         reshelyeUi(false);
+        atbashUi(false);
         break;
     case 2:
         modeC = 2;
         caesarUi(false);
         reshelyeUi(true);
+        atbashUi(false);
         break;
     default:
         break;
