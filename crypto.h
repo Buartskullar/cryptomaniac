@@ -19,6 +19,9 @@ public:
     QString encryptReshelye(const QString input, const QString key);
     QString decryptReshelye(const QString input, const QString key);
 
+    QString encryptGronsfeld(const QString input, const QString key);
+    QString decryptGronsfeld(const QString input, const QString key);
+
 private:
     QString alphEngCap;
     QString alphEngLow;

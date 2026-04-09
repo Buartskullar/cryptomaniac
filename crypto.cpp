@@ -133,18 +133,18 @@ QString crypto::encryptReshelye(QString input, QString key){
     QList<int> spaces = spaceFinder(input);
     input.remove(' ');
     for (int listI = 0; listI < keys.length(); listI++){
-        QString curKey = keys[listI];
+        QStringList curKey = keys[listI].split(",", Qt::SkipEmptyParts);
         QString segment = input.mid(offset, curKey.length());
         int threshold = segment.length();
-        for (const QChar &num : curKey){
-            if (num.digitValue() > threshold) {
+        for (QString &num : curKey){
+            if (num.toInt() > threshold) {
                 return "Ошибка в наибольшей цифре ключа!";
             }
         }
         if (segment.isEmpty()) break;
         for (int i = 0; i < segment.length(); i++){
             if (segment[i] == ' ') output.append(' ');
-            output.append(segment[curKey[i].digitValue()-1]);
+            output.append(segment[curKey[i].toInt()-1]);
         }
         offset += segment.length();
         output.remove(' ');
@@ -162,19 +162,18 @@ QString crypto::decryptReshelye(QString input, QString key){
     QList<int> spaces = spaceFinder(input);
     input.remove(' ');
     for (int listI = 0; listI < keys.length(); listI++){
-        QString curKey = keys[listI];
-        QString segment = input.mid(offset, curKey.length());
+        QStringList curKey = keys[listI].split(",", Qt::SkipEmptyParts);        QString segment = input.mid(offset, curKey.length());
         QString outSeg;
         outSeg.fill('.', segment.length());
-        for (const QChar &num : curKey){
-            if (num.digitValue() > segment.length()) {
+        for (QString &num : curKey){
+            if (num.toInt() > segment.length()) {
                 return "Ошибка в наибольшей цифре ключа!";
             }
         }
         if (segment.isEmpty()) break;
         for (int i = 0; i < segment.length(); i++){
             if (segment[i] == ' ') outSeg[i] = ' ';
-            outSeg[curKey[i].digitValue()-1] = segment[i];
+            outSeg[curKey[i].toInt()-1] = segment[i];
         }
         offset += segment.length();
         output.append(outSeg);
@@ -184,4 +183,78 @@ QString crypto::decryptReshelye(QString input, QString key){
         output.insert(spaces[i], ' ');
     }
     return output;
+}
+
+QString crypto::encryptGronsfeld(const QString input, const QString key) {
+    if (key.isEmpty()) return input;
+
+    QString result;
+    int keyIndex = 0;
+
+    for (const QChar &ch : input) {
+        int shift = key[keyIndex % key.length()].digitValue();
+
+        if (shift < 0) {
+            result.append(ch);
+            continue;
+        }
+
+        QString alph;
+
+        if (alphEngCap.contains(ch)) alph = alphEngCap;
+        else if (alphEngLow.contains(ch)) alph = alphEngLow;
+        else if (alphRusCap.contains(ch)) alph = alphRusCap;
+        else if (alphRusLow.contains(ch)) alph = alphRusLow;
+        else {
+            result.append(ch);
+            continue;
+        }
+
+        int index = alph.indexOf(ch);
+        int newIndex = (index + shift) % alph.length();
+
+        result.append(alph[newIndex]);
+        keyIndex++;
+    }
+
+    return result;
+}
+
+QString crypto::decryptGronsfeld(const QString input, const QString key) {
+    if (key.isEmpty()) return input;
+
+    QString result;
+    int keyIndex = 0;
+
+    for (const QChar &ch : input) {
+        int shift = key[keyIndex % key.length()].digitValue();
+
+        if (shift < 0) {
+            result.append(ch);
+            continue;
+        }
+
+        QString alph;
+
+        if (alphEngCap.contains(ch)) alph = alphEngCap;
+        else if (alphEngLow.contains(ch)) alph = alphEngLow;
+        else if (alphRusCap.contains(ch)) alph = alphRusCap;
+        else if (alphRusLow.contains(ch)) alph = alphRusLow;
+        else {
+            result.append(ch); // не буква
+            continue;
+        }
+
+        int index = alph.indexOf(ch);
+
+        int newIndex = (index - shift) % alph.length();
+
+        if (newIndex < 0)
+            newIndex += alph.length();
+
+        result.append(alph[newIndex]);
+        keyIndex++;
+    }
+
+    return result;
 }

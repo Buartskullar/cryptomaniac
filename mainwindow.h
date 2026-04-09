@@ -47,6 +47,8 @@ private:
     void caesarUi(bool status);
     void reshelyeUi(bool status);
     void atbashUi(bool status);
+    void gronsfeldUi(bool status);
+
 
     QString encryptMaster();
     QString decryptMaster();

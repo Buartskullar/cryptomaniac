@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>КРИПТОМАНЬЯК 1.0</string>
+   <string>КРИПТОМАНЬЯК 1.1</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="layoutWidget">
@@ -135,7 +135,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
