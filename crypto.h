@@ -22,6 +22,9 @@ public:
     QString encryptGronsfeld(const QString input, const QString key);
     QString decryptGronsfeld(const QString input, const QString key);
 
+    QString encryptVigenere(const QString& text, const QString& key);
+    QString decryptVigenere(const QString& text, const QString& key);
+
 private:
     QString alphEngCap;
     QString alphEngLow;
@@ -35,6 +38,7 @@ private:
 
     QList<QString> splitReshelye(const QString &input);
     QList<int> spaceFinder(const QString &input);
+    bool findAlphabet(QChar ch, const QString*& alpha, int& alphaLen, int& chIdx) const;
 
 };
 

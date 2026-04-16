@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listModes->addItem("Цезарь");
     ui->listModes->addItem("Ришелье");
     ui->listModes->addItem("Гронсфельд");
+    ui->listModes->addItem("Виженер");
 
     caesarUi(false);
     reshelyeUi(false);
@@ -61,6 +62,9 @@ void MainWindow::caesarUi(bool status){
     ui->labelOffset->setVisible(status);
     ui->spinOffset->setVisible(status);
 
+    ui->radioButton_decrypt->setVisible(status);
+    ui->radioButton_encrypt->setVisible(status);
+
     if (isDecrypting()) ui->pushButton_encrypter->setText("Дешифровать!");
     else ui->pushButton_encrypter->setText("Зашифровать!");
 }
@@ -73,6 +77,9 @@ void MainWindow::reshelyeUi(bool status){
     QValidator *validatorRish = new QRegularExpressionValidator(rx, this);
     ui->lineReshelye->setValidator(validatorRish);
     ui->labelReshelye->setText("Ключ Ришелье");
+
+    ui->radioButton_decrypt->setVisible(status);
+    ui->radioButton_encrypt->setVisible(status);
 
     if (isDecrypting()) ui->pushButton_encrypter->setText("Дешифровать!");
     else ui->pushButton_encrypter->setText("Зашифровать!");
@@ -103,38 +110,52 @@ void MainWindow::gronsfeldUi(bool status){
     else ui->pushButton_encrypter->setText("Зашифровать!");
 }
 
+void MainWindow::vigenereUi(bool status){
+    ui->radioButton_decrypt->setVisible(status);
+    ui->radioButton_encrypt->setVisible(status);
+
+    ui->labelReshelye->setVisible(status);
+    ui->lineReshelye->setVisible(status);
+
+    QRegularExpression rx("^[A-Za-zА-Яа-яЁё]*$");
+    QValidator *validatorGron = new QRegularExpressionValidator(rx, this);
+    ui->lineReshelye->setValidator(validatorGron);
+
+    ui->labelReshelye->setText("Ключ Виженера");
+
+    if (isDecrypting()) ui->pushButton_encrypter->setText("Дешифровать!");
+    else ui->pushButton_encrypter->setText("Зашифровать!");
+}
 
 void MainWindow::onListItemChanged(int row){
     ui->lineReshelye->setText("");
+
+    caesarUi(false);
+    reshelyeUi(false);
+    atbashUi(false);
+    gronsfeldUi(false);
+    vigenereUi(false);
+
     switch (row) {
     case 0:
         modeC = 0;
-        caesarUi(false);
-        reshelyeUi(false);
-        gronsfeldUi(false);
         atbashUi(true);
         break;
     case 1:
         modeC = 1;
-        reshelyeUi(false);
-        atbashUi(false);
-        gronsfeldUi(false);
         caesarUi(true);
         break;
     case 2:
         modeC = 2;
-        caesarUi(false);
-        atbashUi(false);
-        gronsfeldUi(false);
         reshelyeUi(true);
         break;
     case 3:
         modeC = 3;
-        caesarUi(false);
-        reshelyeUi(false);
-        atbashUi(false);
         gronsfeldUi(true);
         break;
+    case 4:
+        modeC= 4;
+        vigenereUi(true);
     default:
         break;
     }
@@ -156,6 +177,9 @@ QString MainWindow::encryptMaster(){
     case 3:
         return cryops.encryptGronsfeld(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
         break;
+    case 4:
+        return cryops.encryptVigenere(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
+        break;
     default:
         return " ";
     }
@@ -176,6 +200,9 @@ QString MainWindow::decryptMaster(){
         break;
     case 3:
         return cryops.decryptGronsfeld(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
+        break;
+    case 4:
+        return cryops.decryptVigenere(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
         break;
     default:
         return "";
@@ -225,6 +252,7 @@ void MainWindow::on_explainButton_clicked()
     QString linkCaesar = "https://ru.wikipedia.org/wiki/%D0%A8%D0%B8%D1%84%D1%80_%D0%A6%D0%B5%D0%B7%D0%B0%D1%80%D1%8F";
     QString linkReshelye = "https://de.donstu.ru/CDOCourses/AII/POVT/%D0%9A%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5%20%D1%88%D0%B8%D1%84%D1%80%D1%8B/11.html";
     QString linkGronsfeld = "https://ru.wikipedia.org/wiki/%D0%A8%D0%B8%D1%84%D1%80_%D0%93%D1%80%D0%BE%D0%BD%D1%81%D1%84%D0%B5%D0%BB%D1%8C%D0%B4%D0%B0";
+    QString linkVigener = "https://ru.wikipedia.org/wiki/%D0%A8%D0%B8%D1%84%D1%80_%D0%92%D0%B8%D0%B6%D0%B5%D0%BD%D0%B5%D1%80%D0%B0";
     switch (modeC) {
     case 0:
         QDesktopServices::openUrl(QUrl(linkAtbash));
@@ -237,6 +265,9 @@ void MainWindow::on_explainButton_clicked()
         break;
     case 3:
         QDesktopServices::openUrl(QUrl(linkGronsfeld));
+        break;
+    case 4:
+        QDesktopServices::openUrl(QUrl(linkVigener));
         break;
     }
 }

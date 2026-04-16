@@ -258,3 +258,99 @@ QString crypto::decryptGronsfeld(const QString input, const QString key) {
 
     return result;
 }
+
+bool crypto::findAlphabet(QChar ch, const QString*& alpha, int& alphaLen, int& chIdx) const
+{
+    chIdx = alphEngCap.indexOf(ch);
+    if (chIdx != -1) { alpha = &alphEngCap; alphaLen = alphEngCap.length(); return true; }
+
+    chIdx = alphEngLow.indexOf(ch);
+    if (chIdx != -1) { alpha = &alphEngLow; alphaLen = alphEngLow.length(); return true; }
+
+    chIdx = alphRusCap.indexOf(ch);
+    if (chIdx != -1) { alpha = &alphRusCap; alphaLen = alphRusCap.length(); return true; }
+
+    chIdx = alphRusLow.indexOf(ch);
+    if (chIdx != -1) { alpha = &alphRusLow; alphaLen = alphRusLow.length(); return true; }
+
+    return false;
+}
+
+QString crypto::encryptVigenere(const QString& text, const QString& key)
+{
+    QString result;
+    QString cleanKey;
+    for (const QChar& k : key) {
+        if (k.isLetter()) cleanKey.append(k);
+    }
+    if (cleanKey.isEmpty()) return text;
+
+    int keyLen = cleanKey.length();
+    int keyPos = 0;
+
+    for (const QChar& ch : text) {
+        const QString* alpha = nullptr;
+        int alphaLen = 0;
+        int chIdx = 0;
+
+        if (!findAlphabet(ch, alpha, alphaLen, chIdx)) {
+            result.append(ch);
+            continue;
+        }
+
+        QChar keyChar = cleanKey[keyPos % keyLen];
+        int shift = 0;
+
+        QChar keyUpper = keyChar.toUpper();
+        shift = alphEngCap.indexOf(keyUpper);
+        if (shift == -1) {
+            shift = alphRusCap.indexOf(keyUpper);
+        }
+        if (shift == -1) shift = 0;
+
+        int newIdx = (chIdx + shift) % alphaLen;
+        result.append(alpha->at(newIdx));
+
+        keyPos++;
+    }
+
+    return result;
+}
+
+QString crypto::decryptVigenere(const QString& text, const QString& key)
+{
+    QString result;
+    QString cleanKey;
+    for (const QChar& k : key) {
+        if (k.isLetter()) cleanKey.append(k);
+    }
+    if (cleanKey.isEmpty()) return text;
+
+    int keyLen = cleanKey.length();
+    int keyPos = 0;
+
+    for (const QChar& ch : text) {
+        const QString* alpha = nullptr;
+        int alphaLen = 0;
+        int chIdx = 0;
+
+        if (!findAlphabet(ch, alpha, alphaLen, chIdx)) {
+            result.append(ch);
+            continue;
+        }
+
+        QChar keyChar = cleanKey[keyPos % keyLen];
+        int shift = 0;
+        QChar keyUpper = keyChar.toUpper();
+        shift = alphEngCap.indexOf(keyUpper);
+        if (shift == -1) shift = alphRusCap.indexOf(keyUpper);
+        if (shift == -1) shift = 0;
+
+        int newIdx = (chIdx - shift + alphaLen) % alphaLen;
+        result.append(alpha->at(newIdx));
+
+        keyPos++;
+    }
+
+    return result;
+}
