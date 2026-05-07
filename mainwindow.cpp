@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listModes->addItem("Ришелье");
     ui->listModes->addItem("Гронсфельд");
     ui->listModes->addItem("Виженер");
+    ui->listModes->addItem("Гаммирование");
 
     caesarUi(false);
     reshelyeUi(false);
@@ -127,6 +128,25 @@ void MainWindow::vigenereUi(bool status){
     else ui->pushButton_encrypter->setText("Зашифровать!");
 }
 
+void MainWindow::gammaUi(bool status){
+    ui->radioButton_decrypt->setVisible(status);
+    ui->radioButton_encrypt->setVisible(status);
+
+    ui->labelReshelye->setVisible(status);
+    ui->lineReshelye->setVisible(status);
+
+    QRegularExpression rx("[0-9]+");
+    QValidator *validatorGron = new QRegularExpressionValidator(rx, this);
+    ui->lineReshelye->setValidator(validatorGron);
+
+    ui->labelReshelye->setText("Сид");
+
+    //if (status)
+      //  ui->pushButton_encrypter->setText("Перешифровать!");
+    if (isDecrypting()) ui->pushButton_encrypter->setText("Дешифровать!");
+    else ui->pushButton_encrypter->setText("Зашифровать!");
+}
+
 void MainWindow::onListItemChanged(int row){
     ui->lineReshelye->setText("");
 
@@ -135,6 +155,7 @@ void MainWindow::onListItemChanged(int row){
     atbashUi(false);
     gronsfeldUi(false);
     vigenereUi(false);
+    gammaUi(false);
 
     switch (row) {
     case 0:
@@ -156,6 +177,9 @@ void MainWindow::onListItemChanged(int row){
     case 4:
         modeC= 4;
         vigenereUi(true);
+    case 5:
+        modeC = 5;
+        gammaUi(true);
     default:
         break;
     }
@@ -180,6 +204,9 @@ QString MainWindow::encryptMaster(){
     case 4:
         return cryops.encryptVigenere(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
         break;
+    case 5:
+        return cryops.ecnryptGamma(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
+        break;
     default:
         return " ";
     }
@@ -203,6 +230,9 @@ QString MainWindow::decryptMaster(){
         break;
     case 4:
         return cryops.decryptVigenere(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
+        break;
+    case 5:
+        return cryops.decryptGamma(ui->textEdit_input->toPlainText(), ui->lineReshelye->text());
         break;
     default:
         return "";
@@ -253,6 +283,7 @@ void MainWindow::on_explainButton_clicked()
     QString linkReshelye = "https://de.donstu.ru/CDOCourses/AII/POVT/%D0%9A%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5%20%D1%88%D0%B8%D1%84%D1%80%D1%8B/11.html";
     QString linkGronsfeld = "https://ru.wikipedia.org/wiki/%D0%A8%D0%B8%D1%84%D1%80_%D0%93%D1%80%D0%BE%D0%BD%D1%81%D1%84%D0%B5%D0%BB%D1%8C%D0%B4%D0%B0";
     QString linkVigener = "https://ru.wikipedia.org/wiki/%D0%A8%D0%B8%D1%84%D1%80_%D0%92%D0%B8%D0%B6%D0%B5%D0%BD%D0%B5%D1%80%D0%B0";
+    QString linkGamma = "https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D0%BD%D0%B5%D0%B9%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BE%D0%BD%D0%B3%D1%80%D1%83%D1%8D%D0%BD%D1%82%D0%BD%D1%8B%D0%B9_%D0%BC%D0%B5%D1%82%D0%BE%D0%B4";
     switch (modeC) {
     case 0:
         QDesktopServices::openUrl(QUrl(linkAtbash));
@@ -269,6 +300,10 @@ void MainWindow::on_explainButton_clicked()
     case 4:
         QDesktopServices::openUrl(QUrl(linkVigener));
         break;
+    case 5:
+        QDesktopServices::openUrl(QUrl(linkGamma));
+        break;
     }
+
 }
 

@@ -354,3 +354,42 @@ QString crypto::decryptVigenere(const QString& text, const QString& key)
 
     return result;
 }
+
+
+QString crypto::ecnryptGamma(const QString& text, const QString& seed){
+    {
+        QByteArray data = text.toUtf8();
+        unsigned int state = seed.toUInt();
+
+        const unsigned int a = 1664525;
+        const unsigned int c = 1013904223;
+
+        for (int i = 0; i < data.size(); i++)
+        {
+            state = a * state + c;
+            char gamma = state % 256;
+            data[i] = data[i] ^ gamma;
+        }
+
+        return data.toHex();
+    }
+}
+
+QString crypto::decryptGamma(const QString& text, const QString& seed){
+    {
+        QByteArray data = QByteArray::fromHex(text.toUtf8());;
+        unsigned int state = seed.toInt();
+
+        const unsigned int a = 1664525;
+        const unsigned int c = 1013904223;
+
+        for (int i = 0; i < data.size(); i++)
+        {
+            state = a * state + c;
+            char gamma = state % 256;
+            data[i] = data[i] ^ gamma;
+        }
+
+        return QString::fromUtf8(data);
+    }
+}

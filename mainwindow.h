@@ -49,6 +49,7 @@ private:
     void atbashUi(bool status);
     void gronsfeldUi(bool status);
     void vigenereUi(bool status);
+    void gammaUi(bool status);
 
     QString encryptMaster();
     QString decryptMaster();

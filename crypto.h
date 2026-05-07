@@ -25,6 +25,8 @@ public:
     QString encryptVigenere(const QString& text, const QString& key);
     QString decryptVigenere(const QString& text, const QString& key);
 
+    QString ecnryptGamma(const QString& text, const QString& seed);
+    QString decryptGamma(const QString& text, const QString& seed);
 private:
     QString alphEngCap;
     QString alphEngLow;
